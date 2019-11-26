@@ -570,18 +570,18 @@ const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
-const tripInfoBlock = document.querySelector('.trip-info');
+const tripInfoBlock = document.querySelector(`.trip-info`);
 // Ориентир для вставки блока.
-const tripCost = tripInfoBlock.querySelector('.trip-info__cost');
+const tripCost = tripInfoBlock.querySelector(`.trip-info__cost`);
 
 
-const tripControlBlock = document.querySelector('.trip-controls');
+const tripControlBlock = document.querySelector(`.trip-controls`);
 // Ориентир для вставки блока.
-const menuPoint = tripControlBlock.querySelector('h2');
+const menuPoint = tripControlBlock.querySelector(`h2`);
 
-const tripEventsBlock = document.querySelector('.trip-events');
+const tripEventsBlock = document.querySelector(`.trip-events`);
 
-render(tripCost, createTripInfoTemplate(), 'beforebegin');
-render(menuPoint, createMenuTemplate(), 'afterend');
-render(tripControlBlock, createFiltersTemplate(), 'beforeend');
-render(tripEventsBlock, createSortingFormTemplate(), 'beforeend');
+render(tripCost, createTripInfoTemplate(), `beforebegin`);
+render(menuPoint, createMenuTemplate(), `afterend`);
+render(tripControlBlock, createFiltersTemplate(), `beforeend`);
+render(tripEventsBlock, createSortingFormTemplate(), `beforeend`);
