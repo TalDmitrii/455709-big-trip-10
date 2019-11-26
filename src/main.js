@@ -1,3 +1,5 @@
+'use strict';
+
 const createMenuTemplate = () => {
   return (
     `
@@ -579,7 +581,7 @@ const menuPoint = tripControlBlock.querySelector('h2');
 
 const tripEventsBlock = document.querySelector('.trip-events');
 
-render(tripCost, createTripInfoTemplate(), `beforebegin`);
-render(menuPoint, createMenuTemplate(), `afterend`);
-render(tripControlBlock, createFiltersTemplate(), `beforeend`);
-render(tripEventsBlock, createSortingFormTemplate(), `beforeend`);
+render(tripCost, createTripInfoTemplate(), 'beforebegin');
+render(menuPoint, createMenuTemplate(), 'afterend');
+render(tripControlBlock, createFiltersTemplate(), 'beforeend');
+render(tripEventsBlock, createSortingFormTemplate(), 'beforeend');
