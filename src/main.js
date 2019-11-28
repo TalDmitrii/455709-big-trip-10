@@ -255,7 +255,7 @@ const createEditFormTemplate = () => {
     </form>
   `
   );
-}
+};
 
 const createTripInfoTemplate = () => {
   return (
