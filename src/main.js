@@ -94,8 +94,8 @@ const createDaysListTemplate = () => {
 
       </ul>
     `
-  )
-}
+  );
+};
 
 const createDaysItemTemplate = () => {
   return (
@@ -108,8 +108,8 @@ const createDaysItemTemplate = () => {
 
       </li>
     `
-  )
-}
+  );
+};
 
 const createCardListTemplate = () => {
   return (
@@ -118,8 +118,8 @@ const createCardListTemplate = () => {
 
       </ul>  
     `
-  )
-}
+  );
+};
 
 const createCardTemplate = () => {
   return (
@@ -194,5 +194,5 @@ const cardsBlock = document.querySelector(`.trip-events__list`);
 new Array(TASK_COUNT)
   .fill(``)
   .forEach(
-    () => render(cardsBlock, createCardTemplate(), `beforeend`)
+      () => render(cardsBlock, createCardTemplate(), `beforeend`)
   );
