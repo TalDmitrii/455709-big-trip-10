@@ -1,5 +1,5 @@
 import {render} from './components/utils';
-import {PROJECT__CONST} from './components/const';
+import {PROJECT__CONST} from './const';
 
 import {createFiltersTemplate} from './components/filter';
 import {createSortingFormTemplate} from './components/sorting-form';
@@ -13,6 +13,9 @@ import {createDaysItemTemplate} from './components/trip-day';
 import {createDayPointListTemplate} from './components/day-point-list';
 import {createDayPointTemplate} from './components/day-point';
 
+import {generateDayPoints} from './mock/day-point';
+
+const dayPoints = generateDayPoints(PROJECT__CONST.taskCount);
 
 const tripInfoBlock = document.querySelector(`.trip-info`);
 // Ориентир для вставки блока.
@@ -29,7 +32,7 @@ render(tripCost, createTripInfoTemplate(), `beforebegin`);
 render(menuPoint, createMenuTemplate(), `afterend`);
 render(tripControlBlock, createFiltersTemplate(), `beforeend`);
 render(tripEventsBlock, createSortingFormTemplate(), `beforeend`);
-render(tripEventsBlock, createEditFormTemplate(), `beforeend`);
+render(tripEventsBlock, createEditFormTemplate(dayPoints[0]), `beforeend`);
 
 render(tripEventsBlock, createDaysListTemplate(), `beforeend`);
 const daysList = document.querySelector(`.trip-days`);
@@ -40,6 +43,4 @@ const daysItem = document.querySelector(`.trip-days__item`);
 render(daysItem, createDayPointListTemplate(), `beforeend`);
 const cardsBlock = document.querySelector(`.trip-events__list`);
 
-for (let i = 0; i < PROJECT__CONST.taskCount; i++) {
-  render(cardsBlock, createDayPointTemplate(), `beforeend`);
-}
+dayPoints.slice(1).forEach((dayPoint) => render(cardsBlock, createDayPointTemplate(dayPoint), `beforeend`));

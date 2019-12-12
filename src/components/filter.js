@@ -1,4 +1,5 @@
 export {createFiltersTemplate};
+// import {filterGenerate} from '../mock/filter.js'
 
 const createFiltersTemplate = () => {
   return (
