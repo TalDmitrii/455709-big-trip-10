@@ -14,8 +14,14 @@ import {createDayPointListTemplate} from './components/day-point-list';
 import {createDayPointTemplate} from './components/day-point';
 
 import {generateDayPoints} from './mock/day-point';
+import {generateFilter} from './mock/filter';
+import {generateMenu} from './mock/menu';
 
 const dayPoints = generateDayPoints(PROJECT__CONST.taskCount);
+const filters = generateFilter();
+const menuItems = generateMenu();
+console.dir(filters);
+console.dir(menuItems);
 
 const tripInfoBlock = document.querySelector(`.trip-info`);
 // Ориентир для вставки блока.
@@ -29,8 +35,8 @@ const menuPoint = tripControlBlock.querySelector(`h2`);
 const tripEventsBlock = document.querySelector(`.trip-events`);
 
 render(tripCost, createTripInfoTemplate(), `beforebegin`);
-render(menuPoint, createMenuTemplate(), `afterend`);
-render(tripControlBlock, createFiltersTemplate(), `beforeend`);
+render(menuPoint, createMenuTemplate(menuItems), `afterend`);
+render(tripControlBlock, createFiltersTemplate(filters), `beforeend`);
 render(tripEventsBlock, createSortingFormTemplate(), `beforeend`);
 render(tripEventsBlock, createEditFormTemplate(dayPoints[0]), `beforeend`);
 
