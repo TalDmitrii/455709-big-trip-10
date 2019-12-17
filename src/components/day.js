@@ -1,23 +1,25 @@
 import {createElement} from '../utils';
 
-const createTripInfoTemplate = () => {
+const createDayItemTemplate = () => {
   return (
-    `<div class="trip-info__main">
-        <h1 class="trip-info__title">Amsterdam &mdash; ... &mdash; Amsterdam</h1>
+    `<li class="trip-days__item  day">
+        <div class="day__info">
+          <span class="day__counter">1</span>
+          <time class="day__date" datetime="2019-03-18">MAR 18</time>
+        </div>
 
-        <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;21</p>
-      </div>
+      </li>
     `
   );
 };
 
-export default class TripInfo {
+export default class Day {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createTripInfoTemplate();
+    return createDayItemTemplate();
   }
 
   getElement() {

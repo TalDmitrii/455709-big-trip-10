@@ -4,7 +4,7 @@ const generateFilter = () => {
   return filterNames.map((it) => {
     return {
       name: it,
-    }
+    };
   });
 };
 

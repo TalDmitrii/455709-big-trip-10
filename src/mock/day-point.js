@@ -1,9 +1,4 @@
-import {getRandomIntegerNumber} from '../utils';
-import {getRandomArrayItem} from '../utils';
-import {getRandomArrayItems} from '../utils';
-import {getItemFromObject} from '../utils';
-import {getRandomValueArray} from '../utils';
-import {getUniqueValueFromArray} from '../utils';
+import Utils from '../utils';
 
 const typePointImage = {
   'Taxi': `taxi.png`,
@@ -61,24 +56,24 @@ const generateOffers = (offers) => {
 
 
 export const generateDayPoint = () => {
-  const keyItem = getRandomArrayItem(typePoint);
+  const keyItem = Utils.getRandomArrayItem(typePoint);
 
   // Получает случайное число в диапазоне от 15 до 200, округлённое до десятков.
-  const randomPrice = Math.round(getRandomIntegerNumber(15, 200) / 10) * 10;
+  const randomPrice = Math.round(Utils.getRandomIntegerNumber(15, 200) / 10) * 10;
 
   // Берёт 20 случайных значений в диапазоне от 1 до 50.
-  const randomNumbers = getRandomValueArray(20, 1, 50);
+  const randomNumbers = Utils.getRandomValueArray(20, 1, 50);
   // Получает уникальные значения из массива.
-  const uniqueNumbers = getUniqueValueFromArray(randomNumbers);
+  const uniqueNumbers = Utils.getUniqueValueFromArray(randomNumbers);
   // Укорачивает массив до 5-ти элементов.
   uniqueNumbers.length = 5;
 
-  const placeDescription = getRandomArrayItems(phrasesArray, 1, 3);
+  const placeDescription = Utils.getRandomArrayItems(phrasesArray, 1, 3);
 
   return {
     type: keyItem,
-    image: getItemFromObject(keyItem, typePointImage),
-    city: getRandomArrayItem(cities),
+    image: Utils.getItemFromObject(keyItem, typePointImage),
+    city: Utils.getRandomArrayItem(cities),
     price: randomPrice,
     offers: generateOffers(myOffers),
     picturesNumber: uniqueNumbers,

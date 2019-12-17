@@ -4,7 +4,7 @@ const generateMenu = () => {
   return menuItem.map((it) => {
     return {
       name: it,
-    }
+    };
   });
 };
 

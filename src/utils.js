@@ -11,54 +11,79 @@ export const formatTime = (date) => {
   return `${hours}:${minutes} ${interval}`;
 };
 
-// Возвращает случайное число из диапазона.
-export const getRandomIntegerNumber = (min, max) => {
-  return min + Math.floor(max * Math.random());
+
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`,
 };
 
-// Возвращает случайный элемент из массива.
-export const getRandomArrayItem = (array) => {
-  const randomIndex = getRandomIntegerNumber(0, array.length);
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
 
-  return array[randomIndex];
+  return newElement.firstChild;
 };
 
-// Возвращает случайное количество элементов из массива.
-export const getRandomArrayItems = (array, minCount, maxCount) => {
-  const randomCount = getRandomIntegerNumber(minCount, maxCount);
-  const randomItemsArray = [];
+export const render = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
 
-  for (let i = 0; i < randomCount; i++) {
-    randomItemsArray.push(getRandomArrayItem(array));
+export default class Utils {
+  // Возвращает случайное число из диапазона.
+  static getRandomIntegerNumber(min, max) {
+    return min + Math.floor(max * Math.random());
+  }
+  // Возвращает случайный элемент из массива.
+  static getRandomArrayItem(array) {
+    const randomIndex = this.getRandomIntegerNumber(0, array.length);
+
+    return array[randomIndex];
   }
 
-  return randomItemsArray;
-};
+  // Возвращает случайное количество элементов из массива.
+  static getRandomArrayItems(array, minCount, maxCount) {
+    const randomCount = this.getRandomIntegerNumber(minCount, maxCount);
+    const randomItemsArray = [];
 
-// Возвращает из объекта элемент с переданным ключом.
-export const getItemFromObject = (keyItem, object) => {
-  return object[keyItem];
-};
+    for (let i = 0; i < randomCount; i++) {
+      randomItemsArray.push(this.getRandomArrayItem(array));
+    }
 
-// Возвращает массив случайных значений.
-export const getRandomValueArray = (countElem, minValue, maxValue) => {
-  const randomValueArray = [];
-
-  for (let i = 0; i < countElem; i++) {
-    randomValueArray.push(getRandomIntegerNumber(minValue, maxValue));
+    return randomItemsArray;
   }
 
-  return randomValueArray;
-};
-
-// Возвращает уникальные значения из массива.
-export const getUniqueValueFromArray = (myArray) => {
-  const uniqueValues = new Set(myArray);
-  const uniqueValuesArray = [];
-
-  for (let item of uniqueValues) {
-    uniqueValuesArray.push(item);
+  // Возвращает из объекта элемент с переданным ключом.
+  static getItemFromObject(keyItem, object) {
+    return object[keyItem];
   }
 
-  return uniqueValuesArray;
-};
+  // Возвращает массив случайных значений.
+  static getRandomValueArray(countElem, minValue, maxValue) {
+    const randomValueArray = [];
+
+    for (let i = 0; i < countElem; i++) {
+      randomValueArray.push(this.getRandomIntegerNumber(minValue, maxValue));
+    }
+
+    return randomValueArray;
+  }
+
+  // Возвращает уникальные значения из массива.
+  static getUniqueValueFromArray(myArray) {
+    const uniqueValues = new Set(myArray);
+    const uniqueValuesArray = [];
+
+    for (let item of uniqueValues) {
+      uniqueValuesArray.push(item);
+    }
+
+    return uniqueValuesArray;
+  }
+}

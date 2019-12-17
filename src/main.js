@@ -1,52 +1,68 @@
-import {render} from './components/utils';
+import {render, RenderPosition} from './utils';
 import {PROJECT__CONST} from './const';
-
-import {createFiltersTemplate} from './components/filter';
-import {createSortingFormTemplate} from './components/sorting-form';
-import {createMenuTemplate} from './components/menu';
-import {createEditFormTemplate} from './components/edit-form';
-import {createTripInfoTemplate} from './components/trip-info';
-
-import {createDaysListTemplate} from './components/trip-days-list';
-import {createDaysItemTemplate} from './components/trip-day';
-
-import {createDayPointListTemplate} from './components/day-point-list';
-import {createDayPointTemplate} from './components/day-point';
 
 import {generateDayPoints} from './mock/day-point';
 import {generateFilter} from './mock/filter';
 import {generateMenu} from './mock/menu';
 
+import TripInfo from './components/trip-info';
+import SiteMenu from './components/menu';
+import SiteFilters from './components/filter';
+import SortingForm from './components/sorting-form';
+import EditForm from './components/edit-form';
+import DaysList from './components/days-list';
+import Day from './components/day';
+import PointsList from './components/points-list';
+import Point from './components/point';
+
+// Генерирует данные.
 const dayPoints = generateDayPoints(PROJECT__CONST.taskCount);
 const filters = generateFilter();
 const menuItems = generateMenu();
-console.dir(filters);
-console.dir(menuItems);
 
+// Отрисовывает информацию о путешествии.
 const tripInfoBlock = document.querySelector(`.trip-info`);
-// Ориентир для вставки блока.
-const tripCost = tripInfoBlock.querySelector(`.trip-info__cost`);
-
+render(tripInfoBlock, new TripInfo().getElement(), RenderPosition.AFTERBEGIN);
 
 const tripControlBlock = document.querySelector(`.trip-controls`);
-// Ориентир для вставки блока.
-const menuPoint = tripControlBlock.querySelector(`h2`);
+// Отрисовывает меню.
+render(tripControlBlock, new SiteMenu(menuItems).getElement(), RenderPosition.AFTERBEGIN);
+// Отрисовывает фильтры.
+render(tripControlBlock, new SiteFilters(filters).getElement(), RenderPosition.BEFOREEND);
 
+// Отрисовывает форму сортировки.
 const tripEventsBlock = document.querySelector(`.trip-events`);
+render(tripEventsBlock, new SortingForm().getElement(), RenderPosition.BEFOREEND);
 
-render(tripCost, createTripInfoTemplate(), `beforebegin`);
-render(menuPoint, createMenuTemplate(menuItems), `afterend`);
-render(tripControlBlock, createFiltersTemplate(filters), `beforeend`);
-render(tripEventsBlock, createSortingFormTemplate(), `beforeend`);
-render(tripEventsBlock, createEditFormTemplate(dayPoints[0]), `beforeend`);
+// Отрисовывает список дней.
+render(tripEventsBlock, new DaysList().getElement(), RenderPosition.BEFOREEND);
 
-render(tripEventsBlock, createDaysListTemplate(), `beforeend`);
+// Отрисовывает день.
 const daysList = document.querySelector(`.trip-days`);
+render(daysList, new Day().getElement(), RenderPosition.BEFOREEND);
 
-render(daysList, createDaysItemTemplate(), `beforeend`);
-const daysItem = document.querySelector(`.trip-days__item`);
+// Отрисовывает список точек маршрута.
+const pointsListContainer = document.querySelector(`.trip-days__item`);
+const pointsList = new PointsList();
+render(pointsListContainer, pointsList.getElement(), RenderPosition.BEFOREEND);
 
-render(daysItem, createDayPointListTemplate(), `beforeend`);
-const cardsBlock = document.querySelector(`.trip-events__list`);
+// Отрисовывает точки маршрута.
+const pointsContainer = pointsList.getElement();
 
-dayPoints.slice(1).forEach((dayPoint) => render(cardsBlock, createDayPointTemplate(dayPoint), `beforeend`));
+const renderPoint = (pointData) => {
+  const pointComponent = new Point(pointData);
+  const pointEditComponent = new EditForm(pointData);
+  const editButton = pointComponent.getElement().querySelector(`.event__rollup-btn`);
+  editButton.addEventListener(`click`, () => {
+    pointsContainer.replaceChild(pointEditComponent.getElement(), pointComponent.getElement());
+  });
+
+  const editForm = pointEditComponent.getElement();
+  editForm.addEventListener(`submit`, () => {
+    pointsContainer.replaceChild(pointComponent.getElement(), pointEditComponent.getElement());
+  });
+
+  render(pointsContainer, pointComponent.getElement(), RenderPosition.BEFOREEND);
+};
+
+dayPoints.forEach((dayPoint) => renderPoint(dayPoint));
