@@ -1,11 +1,10 @@
-export {createEditFormTemplate};
+import {createElement} from '../utils';
 
 const createPicturePlaceTemplate = (pictures) => {
   return pictures
     .map((picture) => {
       return (
-        ` 
-          <img class="event__photo" src="http://picsum.photos/300/150?r=${picture}" alt="Event photo">
+        `<img class="event__photo" src="http://picsum.photos/300/150?r=${picture}" alt="Event photo">
         `
       );
     })
@@ -16,8 +15,7 @@ const createDayOfferTemplate = (offers) => {
   return offers
     .map((offer) => {
       return (
-        ` 
-          <div class="event__offer-selector">
+        `<div class="event__offer-selector">
             <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
             <label class="event__offer-label" for="event-offer-luggage-1">
               <span class="event__offer-title">${offer.type}</span>
@@ -25,7 +23,7 @@ const createDayOfferTemplate = (offers) => {
               &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
             </label>
           </div>
-      `
+        `
       );
     })
   .join(`\n`);
@@ -40,8 +38,7 @@ const createEditFormTemplate = (dayPointData) => {
   const placeDescription = description.join(`. `);
 
   return (
-    `
-      <form class="trip-events__item  event  event--edit" action="#" method="post">
+    `<form class="trip-events__item  event  event--edit" action="#" method="post">
       <header class="event__header">
         <div class="event__type-wrapper">
           <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -172,3 +169,26 @@ const createEditFormTemplate = (dayPointData) => {
   `
   );
 };
+
+export default class EditForm {
+  constructor(pointData) {
+    this._pointData = pointData;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEditFormTemplate(this._pointData);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

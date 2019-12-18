@@ -1,16 +1,15 @@
-export {createDayPointTemplate};
+import {createElement} from '../utils';
 
 const createDayOfferTemplate = (offers) => {
   return offers
     .map((offer) => {
       return (
-        ` 
-          <li class="event__offer">
+        `<li class="event__offer">
             <span class="event__offer-title">${offer.type}</span>
             &plus;
             &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
           </li>
-      `
+        `
       );
     })
   .join(`\n`);
@@ -22,8 +21,7 @@ const createDayPointTemplate = (dayPointData) => {
   const pointOffers = createDayOfferTemplate(Array.from(offers));
 
   return (
-    ` 
-      <li class="trip-events__item">
+    `<li class="trip-events__item">
         <div class="event">
           <div class="event__type">
             <img class="event__type-icon" width="42" height="42" src="img/icons/${image}" alt="Event type icon">
@@ -56,3 +54,26 @@ const createDayPointTemplate = (dayPointData) => {
     `
   );
 };
+
+export default class Point {
+  constructor(pointData) {
+    this._element = null;
+    this._pointData = pointData;
+  }
+
+  getTemplate() {
+    return createDayPointTemplate(this._pointData);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
