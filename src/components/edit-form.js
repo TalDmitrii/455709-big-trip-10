@@ -30,7 +30,7 @@ const createDayOfferTemplate = (offers) => {
 };
 
 const createEditFormTemplate = (dayPointData) => {
-  const {type, image, price, offers, picturesNumber, description} = dayPointData;
+  const {type, image, city, price, offers, picturesNumber, description} = dayPointData;
 
   const pointOffers = createDayOfferTemplate(Array.from(offers));
   const pictures = createPicturePlaceTemplate(picturesNumber);
@@ -112,7 +112,7 @@ const createEditFormTemplate = (dayPointData) => {
           <label class="event__label  event__type-output" for="event-destination-1">
           ${type} at
           </label>
-          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Geneva" list="destination-list-1">
+          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city}" list="destination-list-1">
           <datalist id="destination-list-1">
             <option value="Amsterdam"></option>
             <option value="Geneva"></option>

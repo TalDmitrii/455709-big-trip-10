@@ -14,6 +14,7 @@ import DaysList from './components/days-list';
 import Day from './components/day';
 import PointsList from './components/points-list';
 import Point from './components/point';
+import NoPoint from './components/no-point';
 
 // Генерирует данные.
 const dayPoints = generateDayPoints(PROJECT__CONST.taskCount);
@@ -50,19 +51,44 @@ render(pointsListContainer, pointsList.getElement(), RenderPosition.BEFOREEND);
 const pointsContainer = pointsList.getElement();
 
 const renderPoint = (pointData) => {
-  const pointComponent = new Point(pointData);
-  const pointEditComponent = new EditForm(pointData);
-  const editButton = pointComponent.getElement().querySelector(`.event__rollup-btn`);
-  editButton.addEventListener(`click`, () => {
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      replaceEditToPoint();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  const replacePointToEdit = () => {
+    // pointsContainer.replaceChild(pointComponent.getElement(), pointEditComponent.getElement());
     pointsContainer.replaceChild(pointEditComponent.getElement(), pointComponent.getElement());
+  };
+
+  const replaceEditToPoint = () => {
+    // pointsContainer.replaceChild(pointEditComponent.getElement(), pointComponent.getElement());
+    pointsContainer.replaceChild(pointComponent.getElement(), pointEditComponent.getElement());
+
+    document.removeEventListener(`keydown`, onEscKeyDown);
+  };
+
+  const pointComponent = new Point(pointData);
+  const editButton = pointComponent.getElement().querySelector(`.event__rollup-btn`);
+
+  editButton.addEventListener(`click`, () => {
+    replacePointToEdit();
+    document.addEventListener(`keydown`, onEscKeyDown);
   });
 
+  const pointEditComponent = new EditForm(pointData);
   const editForm = pointEditComponent.getElement();
-  editForm.addEventListener(`submit`, () => {
-    pointsContainer.replaceChild(pointComponent.getElement(), pointEditComponent.getElement());
-  });
+  editForm.addEventListener(`submit`, replaceEditToPoint);
 
   render(pointsContainer, pointComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-dayPoints.forEach((dayPoint) => renderPoint(dayPoint));
+if (dayPoints.length > 0) {
+  dayPoints.forEach((dayPoint) => renderPoint(dayPoint));
+} else {
+  render(tripEventsBlock, new NoPoint().getElement(), RenderPosition.BEFOREEND);
+}
