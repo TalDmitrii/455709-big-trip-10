@@ -41,7 +41,7 @@ const renderPoint = (pointsContainer, pointData) => {
   render(pointsContainer, pointComponent, RenderPosition.BEFOREEND);
 };
 
-export default class EventController {
+export default class TripController {
   constructor(container) {
     this._container = container;
 

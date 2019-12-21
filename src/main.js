@@ -10,7 +10,7 @@ import TripInfo from './components/trip-info';
 import SiteMenu from './components/menu';
 import SiteFilters from './components/filter';
 import Container from './components/main-container';
-import EventController from './controllers/pointControlBoard';
+import TripController from './controllers/tripController';
 
 // Генерирует данные.
 const dayPoints = generateDayPoints(PROJECT__CONST.taskCount);
@@ -32,5 +32,5 @@ const mainContainer = document.querySelector(`.page-main .page-body__container`)
 const container = new Container();
 render(mainContainer, container, RenderPosition.BEFOREEND);
 
-const eventController = new EventController(container);
+const eventController = new TripController(container);
 eventController.render(dayPoints);
