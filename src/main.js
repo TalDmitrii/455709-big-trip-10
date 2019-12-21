@@ -1,4 +1,5 @@
-import {render, RenderPosition} from './utils';
+import {render, replace, RenderPosition} from './utils/render'
+
 import {PROJECT__CONST} from './const';
 
 import {generateDayPoints} from './mock/day-point';
@@ -23,29 +24,29 @@ const menuItems = generateMenu();
 
 // Отрисовывает информацию о путешествии.
 const tripInfoBlock = document.querySelector(`.trip-info`);
-render(tripInfoBlock, new TripInfo().getElement(), RenderPosition.AFTERBEGIN);
+render(tripInfoBlock, new TripInfo(), RenderPosition.AFTERBEGIN);
 
 const tripControlBlock = document.querySelector(`.trip-controls`);
 // Отрисовывает меню.
-render(tripControlBlock, new SiteMenu(menuItems).getElement(), RenderPosition.AFTERBEGIN);
+render(tripControlBlock, new SiteMenu(menuItems), RenderPosition.AFTERBEGIN);
 // Отрисовывает фильтры.
-render(tripControlBlock, new SiteFilters(filters).getElement(), RenderPosition.BEFOREEND);
+render(tripControlBlock, new SiteFilters(filters), RenderPosition.BEFOREEND);
 
 // Отрисовывает форму сортировки.
 const tripEventsBlock = document.querySelector(`.trip-events`);
-render(tripEventsBlock, new SortingForm().getElement(), RenderPosition.BEFOREEND);
+render(tripEventsBlock, new SortingForm(), RenderPosition.BEFOREEND);
 
 // Отрисовывает список дней.
-render(tripEventsBlock, new DaysList().getElement(), RenderPosition.BEFOREEND);
+render(tripEventsBlock, new DaysList(), RenderPosition.BEFOREEND);
 
 // Отрисовывает день.
 const daysList = document.querySelector(`.trip-days`);
-render(daysList, new Day().getElement(), RenderPosition.BEFOREEND);
+render(daysList, new Day(), RenderPosition.BEFOREEND);
 
 // Отрисовывает список точек маршрута.
 const pointsListContainer = document.querySelector(`.trip-days__item`);
 const pointsList = new PointsList();
-render(pointsListContainer, pointsList.getElement(), RenderPosition.BEFOREEND);
+render(pointsListContainer, pointsList, RenderPosition.BEFOREEND);
 
 // Отрисовывает точки маршрута.
 const pointsContainer = pointsList.getElement();
@@ -61,34 +62,32 @@ const renderPoint = (pointData) => {
   };
 
   const replacePointToEdit = () => {
-    // pointsContainer.replaceChild(pointComponent.getElement(), pointEditComponent.getElement());
-    pointsContainer.replaceChild(pointEditComponent.getElement(), pointComponent.getElement());
+    // pointsContainer.replaceChild(pointEditComponent.getElement(), pointComponent.getElement());
+    replace(pointEditComponent, pointComponent)
   };
 
   const replaceEditToPoint = () => {
-    // pointsContainer.replaceChild(pointEditComponent.getElement(), pointComponent.getElement());
-    pointsContainer.replaceChild(pointComponent.getElement(), pointEditComponent.getElement());
+    // pointsContainer.replaceChild(pointComponent.getElement(), pointEditComponent.getElement());
+    replace(pointComponent, pointEditComponent)
 
     document.removeEventListener(`keydown`, onEscKeyDown);
   };
 
   const pointComponent = new Point(pointData);
-  const editButton = pointComponent.getElement().querySelector(`.event__rollup-btn`);
 
-  editButton.addEventListener(`click`, () => {
+  pointComponent.setEditButtonClickHandler(() => {
     replacePointToEdit();
     document.addEventListener(`keydown`, onEscKeyDown);
   });
 
   const pointEditComponent = new EditForm(pointData);
-  const editForm = pointEditComponent.getElement();
-  editForm.addEventListener(`submit`, replaceEditToPoint);
+  pointEditComponent.setSubmitHandler(replaceEditToPoint)
 
-  render(pointsContainer, pointComponent.getElement(), RenderPosition.BEFOREEND);
+  render(pointsContainer, pointComponent, RenderPosition.BEFOREEND);
 };
 
 if (dayPoints.length > 0) {
   dayPoints.forEach((dayPoint) => renderPoint(dayPoint));
 } else {
-  render(tripEventsBlock, new NoPoint().getElement(), RenderPosition.BEFOREEND);
+  render(tripEventsBlock, new NoPoint(), RenderPosition.BEFOREEND);
 }

@@ -1,4 +1,4 @@
-import {createElement} from '../utils';
+import AbstractComponent from '../components/abstract-component';
 
 const createSortingFormTemplate = () => {
   return (
@@ -36,24 +36,8 @@ const createSortingFormTemplate = () => {
   );
 };
 
-export default class SortingForm {
-  constructor() {
-    this._element = null;
-  }
-
+export default class SortingForm extends AbstractComponent {
   getTemplate() {
     return createSortingFormTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
