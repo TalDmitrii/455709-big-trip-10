@@ -1,4 +1,4 @@
-import {createElement} from '../utils';
+import AbstractComponent from '../components/abstract-component';
 
 const createDayOfferTemplate = (offers) => {
   return offers
@@ -55,9 +55,10 @@ const createDayPointTemplate = (dayPointData) => {
   );
 };
 
-export default class Point {
+export default class Point extends AbstractComponent {
   constructor(pointData) {
-    this._element = null;
+    super();
+
     this._pointData = pointData;
   }
 
@@ -65,15 +66,8 @@ export default class Point {
     return createDayPointTemplate(this._pointData);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setEditButtonClickHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, handler);
   }
 }

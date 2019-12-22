@@ -1,4 +1,4 @@
-import {createElement} from '../utils';
+import AbstractComponent from '../components/abstract-component';
 
 const createPicturePlaceTemplate = (pictures) => {
   return pictures
@@ -170,25 +170,19 @@ const createEditFormTemplate = (dayPointData) => {
   );
 };
 
-export default class EditForm {
+export default class EditForm extends AbstractComponent {
   constructor(pointData) {
+    super();
+
     this._pointData = pointData;
-    this._element = null;
   }
 
   getTemplate() {
     return createEditFormTemplate(this._pointData);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setSubmitHandler(handler) {
+    this.getElement()
+      .addEventListener(`submit`, handler);
   }
 }
