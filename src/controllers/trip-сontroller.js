@@ -1,6 +1,6 @@
 import {render, replace, RenderPosition} from '../utils/render';
 
-import SortingForm from '../components/sorting-form';
+import SortingForm, {SortType} from '../components/sorting-form';
 import EditForm from '../components/edit-form';
 import DaysList from '../components/days-list';
 import Day from '../components/day';
@@ -65,6 +65,25 @@ export default class TripController {
     // Отрисовывает список точек маршрута.
     render(this._day.getElement(), this._pointsList, RenderPosition.BEFOREEND);
 
+    // Отрисовывает точки маршрута.
     points.forEach((point) => this.renderPoint(pointsContainer, point));
+
+    // Добавляет сортировку.
+    this._sortingForm.setSortTypeChangeHandler((sortType) => {
+      let sortedPoints = [];
+
+      switch (sortType) {
+        case SortType.PRICE:
+          sortedPoints = points.slice().sort((a, b) => b.price - a.price);
+          break;
+        case SortType.DEFAULT:
+          sortedPoints = points;
+          break;
+      }
+
+      pointsContainer.innerHTML = ``;
+
+      sortedPoints.forEach((point) => this.renderPoint(pointsContainer, point));
+    });
   }
 }
