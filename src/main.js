@@ -10,7 +10,7 @@ import TripInfo from './components/trip-info';
 import SiteMenu from './components/menu';
 import SiteFilters from './components/filter';
 import Container from './components/main-container';
-import TripController from './controllers/tripController';
+import TripController from './controllers/trip-сontroller';
 
 // Генерирует данные.
 const dayPoints = generateDayPoints(PROJECT__CONST.taskCount);
