@@ -32,5 +32,5 @@ const mainContainer = document.querySelector(`.page-main .page-body__container`)
 const container = new Container();
 render(mainContainer, container, RenderPosition.BEFOREEND);
 
-const eventController = new TripController(container);
-eventController.render(dayPoints);
+const tripController = new TripController(container);
+tripController.render(dayPoints);
