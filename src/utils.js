@@ -15,7 +15,7 @@ export default class Utils {
   static getRandomArrayItemWithIndex(array) {
     const randomIndex = this.getRandomIntegerNumber(0, array.length);
 
-    return array[randomIndex], randomIndex;
+    return [array[randomIndex], randomIndex];
   }
 
   // Возвращает случайное количество элементов из массива.

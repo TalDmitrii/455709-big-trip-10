@@ -67,7 +67,7 @@ export const generateDayPoint = () => {
   // Берёт 20 случайных значений в диапазоне от 1 до 50.
   const randomNumbers = Utils.getRandomValueArray(20, 1, 50);
   // Получает уникальные значения из массива.
-  const uniqueNumbers = Utils.getUniqueValuesFromArray (randomNumbers);
+  const uniqueNumbers = Utils.getUniqueValuesFromArray(randomNumbers);
   // Укорачивает массив до 5-ти элементов.
   uniqueNumbers.length = 5;
 
@@ -85,9 +85,9 @@ export const generateDayPoint = () => {
     offers: generateOffers(myOffers),
     picturesNumber: uniqueNumbers,
     description: placeDescription,
-    date_from: "2019-07-10T22:55:56.845Z",
-    date_to: "2019-07-11T11:22:13.375Z",
-    is_favorite: false,
+    dateFrom: `2019-07-10T22:55:56.845Z`,
+    dateTo: `2019-07-11T11:22:13.375Z`,
+    isFavorite: false,
   };
 };
 

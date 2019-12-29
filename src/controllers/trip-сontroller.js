@@ -1,4 +1,4 @@
-import {render, replace, RenderPosition} from '../utils/render';
+import {render, RenderPosition} from '../utils/render';
 
 import SortingForm, {SortType} from '../components/sorting-form';
 import DaysList from '../components/days-list';

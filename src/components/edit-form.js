@@ -32,14 +32,13 @@ const createDayOfferTemplate = (offers, pointID) => {
 };
 
 const createEditFormTemplate = (dayPointData) => {
-  const {type, typeTransport, id, is_favorite, image, city, price, offers, picturesNumber, description} = dayPointData;
+  const {type, typeTransport, id, isFavorite, image, city, price, offers, picturesNumber, description} = dayPointData;
 
   const pointID = id;
   const isTransportType = typeTransport;
-  const isFavorite = is_favorite;
+  const isPointFavorite = isFavorite;
   const pointOffers = createDayOfferTemplate(Array.from(offers), pointID);
   const pictures = createPicturePlaceTemplate(picturesNumber);
-  
 
   const placeDescription = description.join(`. `);
 
@@ -147,7 +146,7 @@ const createEditFormTemplate = (dayPointData) => {
           <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" value="">
         </div>
 
-        <input id="event-favorite-${id}" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${isFavorite ? `checked` : ``}>
+        <input id="event-favorite-${id}" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${isPointFavorite ? `checked` : ``}>
         <label class="event__favorite-btn" for="event-favorite-${id}">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
@@ -228,7 +227,7 @@ export default class EditForm extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.setSubmitHandler(this._submitHandler)
+    this.setSubmitHandler(this._submitHandler);
     this._subscribeOnEvents();
   }
 
@@ -239,7 +238,7 @@ export default class EditForm extends AbstractSmartComponent {
   }
 
   reset() {
-    const point = this._point;
+    // const point = this._point;
 
     // this._isDateShowing = !!task.dueDate;
     // this._isRepeatingTask = Object.values(task.repeatingDays).some(Boolean);
@@ -249,7 +248,6 @@ export default class EditForm extends AbstractSmartComponent {
   }
 
   _applyFlatpickr() {
-    // console.dir(this._flatpickr);
     if (this._flatpickr) {
       // При своем создании `flatpickr` дополнительно создает вспомогательные DOM-элементы.
       // Что бы их удалять, нужно вызывать метод `destroy` у созданного инстанса `flatpickr`.
@@ -263,8 +261,6 @@ export default class EditForm extends AbstractSmartComponent {
       allowInput: true,
       // defaultDate: this._task.dueDate,
     });
-
-    // console.dir(this._flatpickr);
   }
 
   _subscribeOnEvents() {
@@ -288,16 +284,10 @@ export default class EditForm extends AbstractSmartComponent {
             }
           }
 
-          // const isTransportType
           this._point.typeTransport = transportType.has(this._point.type);
 
-          // console.dir(element);
-          // console.dir(this._point);
-
-
-
           this.rerender();
-        }        
+        }
       });
   }
 }

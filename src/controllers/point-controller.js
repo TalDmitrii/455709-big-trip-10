@@ -37,7 +37,7 @@ export default class PointController {
 
     this._editFormComponent.setFavoritesButtonClickHandler(() => {
       this._onDataChange(this, point, Object.assign({}, point, {
-        is_favorite: !point.is_favorite,
+        isFavorite: !point.isFavorite,
       }));
     });
 
@@ -69,7 +69,7 @@ export default class PointController {
     this._mode = Mode.DEFAULT;
 
     document.removeEventListener(`keydown`, this._onEscKeyDown);
-  };
+  }
 
   _replacePointToEdit() {
     this._onViewChange();
@@ -85,5 +85,5 @@ export default class PointController {
       this._replaceEditToPoint();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     }
-  };
+  }
 }
