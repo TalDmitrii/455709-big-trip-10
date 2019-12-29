@@ -16,9 +16,10 @@ const createDayOfferTemplate = (offers) => {
 };
 
 const createDayPointTemplate = (dayPointData) => {
-  const {type, image, city, price, offers} = dayPointData;
+  const {type, typeTransport, image, city, price, offers} = dayPointData;
 
   const pointOffers = createDayOfferTemplate(Array.from(offers));
+  const isTransportType = typeTransport;
 
   return (
     `<li class="trip-events__item">
@@ -26,7 +27,7 @@ const createDayPointTemplate = (dayPointData) => {
           <div class="event__type">
             <img class="event__type-icon" width="42" height="42" src="img/icons/${image}" alt="Event type icon">
           </div>
-          <h3 class="event__title">${type} to ${city}</h3>
+          <h3 class="event__title">${type} ${isTransportType ? `to` : `in`} ${city}</h3>
 
           <div class="event__schedule">
             <p class="event__time">

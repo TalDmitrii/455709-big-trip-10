@@ -1,4 +1,5 @@
 import Utils from '../utils';
+export {typePointImage, transportType};
 
 const typePointImage = {
   'Taxi': `taxi.png`,
@@ -18,7 +19,9 @@ const pointDescription = `Lorem ipsum dolor sit amet, consectetur adipiscing eli
 // Разбивает строку на предложения.
 const phrasesArray = pointDescription.split(`. `);
 
-const typePoint = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`, `Check`, `Sightseeing`, `Restaurant`];
+const typesPoint = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`, `Check`, `Sightseeing`, `Restaurant`];
+
+const transportType = new Set([`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`]);
 
 const cities = [`Moscow`, `S.Peterburg`, `New York`, `London`, `Berlin`, `Madrid`, `Warsaw`];
 
@@ -47,16 +50,16 @@ const myOffers = [
   }
 ];
 
-
 const generateOffers = (offers) => {
   return offers
     .filter(() => Math.random() > 0.5)
     .slice(0, 2);
 };
 
-
 export const generateDayPoint = () => {
-  const keyItem = Utils.getRandomArrayItem(typePoint);
+  const typePoint = Utils.getRandomArrayItem(typesPoint);
+  const isTransportType = transportType.has(typePoint);
+  // console.dir(isTransportType);
 
   // Получает случайное число в диапазоне от 15 до 200, округлённое до десятков.
   const randomPrice = Math.round(Utils.getRandomIntegerNumber(15, 200) / 10) * 10;
@@ -64,20 +67,27 @@ export const generateDayPoint = () => {
   // Берёт 20 случайных значений в диапазоне от 1 до 50.
   const randomNumbers = Utils.getRandomValueArray(20, 1, 50);
   // Получает уникальные значения из массива.
-  const uniqueNumbers = Utils.getUniqueValueFromArray(randomNumbers);
+  const uniqueNumbers = Utils.getUniqueValuesFromArray (randomNumbers);
   // Укорачивает массив до 5-ти элементов.
   uniqueNumbers.length = 5;
 
   const placeDescription = Utils.getRandomArrayItems(phrasesArray, 1, 3);
 
+  const pointID = Utils.getRandomIntegerNumber(1, 10000);
+
   return {
-    type: keyItem,
-    image: Utils.getItemFromObject(keyItem, typePointImage),
+    type: typePoint,
+    typeTransport: isTransportType,
+    id: pointID,
+    image: Utils.getItemFromObject(typePoint, typePointImage),
     city: Utils.getRandomArrayItem(cities),
     price: randomPrice,
     offers: generateOffers(myOffers),
     picturesNumber: uniqueNumbers,
     description: placeDescription,
+    date_from: "2019-07-10T22:55:56.845Z",
+    date_to: "2019-07-11T11:22:13.375Z",
+    is_favorite: false,
   };
 };
 

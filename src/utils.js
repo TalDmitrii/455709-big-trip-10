@@ -3,11 +3,19 @@ export default class Utils {
   static getRandomIntegerNumber(min, max) {
     return min + Math.floor(max * Math.random());
   }
+
   // Возвращает случайный элемент из массива.
   static getRandomArrayItem(array) {
     const randomIndex = this.getRandomIntegerNumber(0, array.length);
 
     return array[randomIndex];
+  }
+
+  // Возвращает случайный элемент из массива и его индекс.
+  static getRandomArrayItemWithIndex(array) {
+    const randomIndex = this.getRandomIntegerNumber(0, array.length);
+
+    return array[randomIndex], randomIndex;
   }
 
   // Возвращает случайное количество элементов из массива.
@@ -39,7 +47,7 @@ export default class Utils {
   }
 
   // Возвращает уникальные значения из массива.
-  static getUniqueValueFromArray(myArray) {
+  static getUniqueValuesFromArray(myArray) {
     const uniqueValues = new Set(myArray);
     const uniqueValuesArray = [];
 
@@ -49,4 +57,12 @@ export default class Utils {
 
     return uniqueValuesArray;
   }
+
+  // // Возвращает уникальное значение из массива, удаляет это значение из исходного массива.
+  // static getUniqueValueFromArray(myArray) {
+  //   const uniqueItem = this.getRandomArrayItemWithIndex(myArray);
+  //   console.log(uniqueItem);
+  //   // myArray.splice()
+  //   return uniqueItem;
+  // }
 }
