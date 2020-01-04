@@ -1,5 +1,6 @@
 import AbstractSmartComponent from './abstract-smart-component';
 import flatpickr from 'flatpickr';
+import moment from 'moment';
 import {typePointImage, transportType} from '../mock/day-point';
 
 const createPicturePlaceTemplate = (pictures) => {
@@ -32,13 +33,16 @@ const createDayOfferTemplate = (offers, pointID) => {
 };
 
 const createEditFormTemplate = (dayPointData) => {
-  const {type, typeTransport, id, isFavorite, image, city, price, offers, picturesNumber, description} = dayPointData;
+  const {type, typeTransport, id, isFavorite, image, city, price, offers, picturesNumber, description, dateFrom, dateTo} = dayPointData;
 
   const pointID = id;
   const isTransportType = typeTransport;
   const isPointFavorite = isFavorite;
   const pointOffers = createDayOfferTemplate(Array.from(offers), pointID);
   const pictures = createPicturePlaceTemplate(picturesNumber);
+
+  const pointStartDateFullFormat = moment(dateFrom).format(`DD/MM/YYYY HH:mm`);
+  const pointFinishDateFullFormat = moment(dateTo).format(`DD/MM/YYYY HH:mm`);
 
   const placeDescription = description.join(`. `);
 
@@ -96,7 +100,7 @@ const createEditFormTemplate = (dayPointData) => {
               <legend class="visually-hidden">Activity</legend>
 
               <div class="event__type-item">
-                <input id="event-type-check-in-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in">
+                <input id="event-type-check-in-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check">
                 <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-${id}">Check-in</label>
               </div>
 
@@ -130,12 +134,12 @@ const createEditFormTemplate = (dayPointData) => {
           <label class="visually-hidden" for="event-start-time-${id}">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" placeholder="18/03/19 00:00">
+          <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" placeholder="${pointStartDateFullFormat}">
           &mdash;
           <label class="visually-hidden" for="event-end-time-${id}">
             To
           </label>
-          <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" placeholder="18/03/19 00:00">
+          <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" placeholder="${pointFinishDateFullFormat}">
         </div>
 
         <div class="event__field-group  event__field-group--price">
@@ -188,14 +192,13 @@ export default class EditForm extends AbstractSmartComponent {
     super();
 
     this._point = point;
-    // this._pointType = point.type;
-    // this._pointImage = point.image;
 
     // this._isDateShowing = !!task.dueDate;
     // this._isRepeatingTask = Object.values(task.repeatingDays).some(Boolean);
     // this._activeRepeatingDays = Object.assign({}, task.repeatingDays);
 
-    this._flatpickr = null;
+    this._flatpickrStart = null;
+    this._flatpickrEnd = null;
     this._submitHandler = null;
 
     this._applyFlatpickr();
@@ -248,19 +251,76 @@ export default class EditForm extends AbstractSmartComponent {
   }
 
   _applyFlatpickr() {
-    if (this._flatpickr) {
+    if (this._flatpickrStart && this._flatpickrEnd) {
       // При своем создании `flatpickr` дополнительно создает вспомогательные DOM-элементы.
       // Что бы их удалять, нужно вызывать метод `destroy` у созданного инстанса `flatpickr`.
-      this._flatpickr.destroy();
-      this._flatpickr = null;
+      this._flatpickrStart.destroy();
+      this._flatpickrEnd.destroy();
+      this._flatpickrStart = null;
+      this._flatpickrEnd = null;
     }
 
-    const dateElement = this.getElement().querySelector(`.event__input--time`);
-    this._flatpickr = flatpickr(dateElement, {
-      altInput: true,
-      allowInput: true,
-      // defaultDate: this._task.dueDate,
+    const dateElements = Array.from(this.getElement().querySelectorAll(`.event__input--time`));
+    let dateStartElement = null;
+    let dateEndElement = null;
+
+    // const pointDateStart = moment(this._point.dateFrom).format(`DD/MM/YYYY HH:mm`);
+    // const pointDateEnd = moment(this._point.dateTo).format(`DD/MM/YYYY HH:mm`);
+    // console.dir(pointDateStart);
+
+    dateElements.forEach((item) => {
+      if (item.name === `event-start-time`) {
+        dateStartElement = item;
+      }
+
+      if (item.name === `event-end-time`) {
+        dateEndElement = item;
+      }
     });
+
+    this._flatpickrStart = flatpickr(dateStartElement, {
+      enableTime: true,
+      altFormat: `F j, Y`,
+      dateFormat: `d/m/Y H:i`,
+      minDate: this._point.dateFrom,
+      onClose: (selectedDates, dateStr) => {
+        pointTimeEnd.set(`minDate`, dateStr);
+        // console.dir(this.selectedDates[0].toISOString());
+      },
+    });
+
+    this._flatpickrEnd = flatpickr(dateEndElement, {
+      enableTime: true,
+      altFormat: `F j, Y`,
+      dateFormat: `d/m/Y H:i`,
+      minDate: this._point.dateTo,
+    });
+
+    // const pointTimeStart = this._flatpickrStart;
+    const pointTimeEnd = this._flatpickrEnd;
+
+    // console.dir(this._point);
+
+
+    // dateElements.forEach((item) => {
+    //   if (item.name === `event-start-time`) {
+    //     this._flatpickrStart = flatpickr(item, {
+    //       enableTime: true,
+    //       altFormat: `F j, Y`,
+    //       dateFormat: `d-m-Y H:i`,
+    //       minDate: `today`,
+    //       // onClose: function(selectedDates, dateStr, instance) {
+    //       //   this._flatpickrEnd.set('minDate', dateStr)},
+    //     });
+    //   } else {
+    //     this._flatpickrEnd = flatpickr(item, {
+    //       enableTime: true,
+    //       altFormat: `F j, Y`,
+    //       dateFormat: `d-m-Y H:i`,
+    //       minDate: `today`,
+    //     });
+    //   }
+    // });
   }
 
   _subscribeOnEvents() {
@@ -269,9 +329,21 @@ export default class EditForm extends AbstractSmartComponent {
     element.querySelector(`.event__type-list`)
       .addEventListener(`click`, (evt) => {
         const target = evt.target;
-        // console.dir(this._point);
 
         if (target.tagName === `INPUT`) {
+          // const inputs = Array.from(element.querySelectorAll(`.event__type-input`));
+
+          // inputs.forEach((input) => {
+          //   if (input.checked) {
+          //     input.checked = false;
+          //     input.setAttribute(`checked`, ` `);
+          //   }
+          // });
+
+          // target.setAttribute(`checked`, `checked`); // checked = true;
+
+          // console.dir(target);
+
           const type = target.value.toLowerCase();
           const capitalizeType = type.charAt(0).toUpperCase() + type.slice(1);
 
@@ -283,6 +355,8 @@ export default class EditForm extends AbstractSmartComponent {
               break;
             }
           }
+
+          // console.dir(this._point);
 
           this._point.typeTransport = transportType.has(this._point.type);
 

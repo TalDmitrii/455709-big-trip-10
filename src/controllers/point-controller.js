@@ -63,7 +63,7 @@ export default class PointController {
   }
 
   _replaceEditToPoint() {
-    // this._editFormComponent.reset();
+    this._editFormComponent.reset();
 
     replace(this._pointComponent, this._editFormComponent);
     this._mode = Mode.DEFAULT;
